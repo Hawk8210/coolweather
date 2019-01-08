@@ -1,6 +1,7 @@
 package com.example.coolweather;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -79,6 +80,13 @@ public class ChooseAreaFragment extends Fragment {
                     selectedCity = cityList.get(position);
                     queryCounties();
                 }
+                else if (currentLevel == LEVEL_COUNTY) {
+                    String weatherId = countyList.get(position).getWeatherId();
+                    Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                    intent.putExtra("weather_id", weatherId);
+                    startActivity(intent);
+                    getActivity().finish();
+                }
             }
         });
         backButton.setOnClickListener(new View.OnClickListener() {  // 返回操作
@@ -97,7 +105,7 @@ public class ChooseAreaFragment extends Fragment {
      * 查询全国所有省，优先从数据库查询，若没有则去服务器上查询
      */
     private void queryProvinces() {
-        titleText.setText("中国");  // 设置头布局标题
+        titleText.setText("China");  // 设置头布局标题
         backButton.setVisibility(View.GONE);  // 隐藏返回按钮
         provinceList = LitePal.findAll(Province.class);
         if (provinceList.size() > 0) {
